@@ -1,0 +1,387 @@
+{
+  "source": "Mega-Journal",
+  "version": "2025",
+  "count": 76,
+  "journals": [
+    {
+      "刊名": "ADVANCED MATERIALS",
+      "大类": "材料科学",
+      "分区": 1
+    },
+    {
+      "刊名": "Nature Communications",
+      "大类": "综合性期刊",
+      "分区": 1
+    },
+    {
+      "刊名": "Journal of the American Chemical Society",
+      "大类": "化学",
+      "分区": 1
+    },
+    {
+      "刊名": "ANGEWANDTE CHEMIE-INTERNATIONAL EDITION",
+      "大类": "化学",
+      "分区": 1
+    },
+    {
+      "刊名": "ADVANCED FUNCTIONAL MATERIALS",
+      "大类": "材料科学",
+      "分区": 1
+    },
+    {
+      "刊名": "Advanced Science",
+      "大类": "综合性期刊",
+      "分区": 1
+    },
+    {
+      "刊名": "Food Chemistry",
+      "大类": "农林科学",
+      "分区": 1
+    },
+    {
+      "刊名": "Chemical Engineering Journal",
+      "大类": "材料科学",
+      "分区": 1
+    },
+    {
+      "刊名": "JOURNAL OF HAZARDOUS MATERIALS",
+      "大类": "环境科学与生态学",
+      "分区": 1
+    },
+    {
+      "刊名": "Energy",
+      "大类": "工程技术",
+      "分区": 1
+    },
+    {
+      "刊名": "Construction and Building Materials",
+      "大类": "工程技术",
+      "分区": 1
+    },
+    {
+      "刊名": "Journal of Cleaner Production",
+      "大类": "环境科学与生态学",
+      "分区": 1
+    },
+    {
+      "刊名": "EXPERT SYSTEMS WITH APPLICATIONS",
+      "大类": "计算机科学",
+      "分区": 1
+    },
+    {
+      "刊名": "Small",
+      "大类": "材料科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Building Engineering",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "Fuel",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Materials Research and Technology-JMR&T",
+      "大类": "材料科学",
+      "分区": 2
+    },
+    {
+      "刊名": "ACS Applied Materials & Interfaces",
+      "大类": "材料科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Science of The Total Environment",
+      "大类": "环境科学与生态学",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Environmental Management",
+      "大类": "环境科学与生态学",
+      "分区": 2
+    },
+    {
+      "刊名": "SEPARATION AND PURIFICATION TECHNOLOGY",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "International Journal of Biological Macromolecules",
+      "大类": "生物学",
+      "分区": 2
+    },
+    {
+      "刊名": "Ocean Engineering",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "PHYSICS OF FLUIDS",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "INTERNATIONAL JOURNAL OF HYDROGEN ENERGY",
+      "大类": "材料科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Energy Storage",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "Frontiers in Immunology",
+      "大类": "医学",
+      "分区": 2
+    },
+    {
+      "刊名": "BMC PUBLIC HEALTH",
+      "大类": "医学",
+      "分区": 2
+    },
+    {
+      "刊名": "Nutrients",
+      "大类": "医学",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Environmental Chemical Engineering",
+      "大类": "工程技术",
+      "分区": 2
+    },
+    {
+      "刊名": "Ceramics International",
+      "大类": "材料科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Alloys and Compounds",
+      "大类": "材料科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Foods",
+      "大类": "农林科学",
+      "分区": 2
+    },
+    {
+      "刊名": "OPTICS EXPRESS",
+      "大类": "物理与天体物理",
+      "分区": 2
+    },
+    {
+      "刊名": "Frontiers in Plant Science",
+      "大类": "生物学",
+      "分区": 2
+    },
+    {
+      "刊名": "Remote Sensing",
+      "大类": "地球科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Plants-Basel",
+      "大类": "生物学",
+      "分区": 2
+    },
+    {
+      "刊名": "Frontiers in Microbiology",
+      "大类": "生物学",
+      "分区": 2
+    },
+    {
+      "刊名": "Animals",
+      "大类": "农林科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Journal of Molecular Structure",
+      "大类": "化学",
+      "分区": 2
+    },
+    {
+      "刊名": "Agronomy-Basel",
+      "大类": "农林科学",
+      "分区": 2
+    },
+    {
+      "刊名": "Scientific Reports",
+      "大类": "综合性期刊",
+      "分区": 3
+    },
+    {
+      "刊名": "Cancers",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "IEEE SENSORS JOURNAL",
+      "大类": "综合性期刊",
+      "分区": 3
+    },
+    {
+      "刊名": "Frontiers in Pharmacology",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "INTERNATIONAL JOURNAL OF MOLECULAR SCIENCES",
+      "大类": "生物学",
+      "分区": 3
+    },
+    {
+      "刊名": "Journal of Clinical Medicine",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "Biomedicines",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "PLoS One",
+      "大类": "综合性期刊",
+      "分区": 3
+    },
+    {
+      "刊名": "Frontiers in Public Health",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "Diagnostics",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "Frontiers in Psychology",
+      "大类": "心理学",
+      "分区": 3
+    },
+    {
+      "刊名": "Frontiers in Oncology",
+      "大类": "医学",
+      "分区": 3
+    },
+    {
+      "刊名": "Polymers",
+      "大类": "工程技术",
+      "分区": 3
+    },
+    {
+      "刊名": "MOLECULES",
+      "大类": "化学",
+      "分区": 3
+    },
+    {
+      "刊名": "SENSORS",
+      "大类": "综合性期刊",
+      "分区": 3
+    },
+    {
+      "刊名": "Buildings",
+      "大类": "工程技术",
+      "分区": 3
+    },
+    {
+      "刊名": "ACS Omega",
+      "大类": "化学",
+      "分区": 3
+    },
+    {
+      "刊名": "Materials Today Communications",
+      "大类": "材料科学",
+      "分区": 3
+    },
+    {
+      "刊名": "Sustainability",
+      "大类": "环境科学与生态学",
+      "分区": 3
+    },
+    {
+      "刊名": "PHYSICAL CHEMISTRY CHEMICAL PHYSICS",
+      "大类": "化学",
+      "分区": 3
+    },
+    {
+      "刊名": "RSC Advances",
+      "大类": "化学",
+      "分区": 3
+    },
+    {
+      "刊名": "Materials",
+      "大类": "材料科学",
+      "分区": 3
+    },
+    {
+      "刊名": "PHYSICA SCRIPTA",
+      "大类": "物理与天体物理",
+      "分区": 3
+    },
+    {
+      "刊名": "Heliyon",
+      "大类": "综合性期刊",
+      "分区": 4
+    },
+    {
+      "刊名": "BMJ Open",
+      "大类": "医学",
+      "分区": 4
+    },
+    {
+      "刊名": "IEEE Access",
+      "大类": "计算机科学",
+      "分区": 4
+    },
+    {
+      "刊名": "Healthcare",
+      "大类": "医学",
+      "分区": 4
+    },
+    {
+      "刊名": "Mathematics",
+      "大类": "数学",
+      "分区": 4
+    },
+    {
+      "刊名": "Water",
+      "大类": "环境科学与生态学",
+      "分区": 4
+    },
+    {
+      "刊名": "Electronics",
+      "大类": "计算机科学",
+      "分区": 4
+    },
+    {
+      "刊名": "Applied Sciences-Basel",
+      "大类": "综合性期刊",
+      "分区": 4
+    },
+    {
+      "刊名": "Energies",
+      "大类": "工程技术",
+      "分区": 4
+    },
+    {
+      "刊名": "Processes",
+      "大类": "工程技术",
+      "分区": 4
+    },
+    {
+      "刊名": "MEDICINE",
+      "大类": "医学",
+      "分区": 4
+    },
+    {
+      "刊名": "Cureus Journal of Medical Science",
+      "大类": "医学",
+      "分区": 4
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "publication-rank"
+version = "0.1.0"
+description = "MCP server for querying academic journal rankings (JCR quartile, CAS zone, impact factor, etc.)"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.6.0",
+    "httpx>=0.28.0",
+    "beautifulsoup4>=4.13.0",
+    "lxml>=5.3.0",
+]
+
+[project.scripts]
+publication-rank = "publication_rank:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/publication_rank"]
