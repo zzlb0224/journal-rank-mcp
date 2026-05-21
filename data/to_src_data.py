@@ -1,3 +1,26 @@
+# ══════════════════════════════════════════════════════════════════════════
+#  MIT License — https://github.com/zzlb0224/journal-rank-mcp
+#  Free to use, modify, and distribute. Retain this notice.
+#
+#  📦 期刊数据流水线
+#  ───────────────────────────────────────────
+#  职责：从 data/ 下各子目录的原始 JSON 读入 → 合并去重 → 输出
+#        journals.json（ISSN 为 key 的完整库）
+#        journals_high_rank.json（CAS 1-2 区 + JCR Q1-Q2 过滤库）
+#        journals.csv（扁平表格）
+#
+#  🔧 如需扩展字段或新增期刊级别：
+#     1. 将原始数据文件放入 data/ 下对应子目录
+#     2. 在 load_journals() 能加载到的位置（参考现有 JSON 结构，
+#        需包含 "source" 和 "journals" 字段）
+#     3. 在本文件底部附近的 elif 分支添加该 source 的解析逻辑
+#     4. 在 JournalRecord.__slots__ 添加新字段
+#     5. 在 JSON 输出段（# ── Build JSON output ── 附近）
+#        添加该字段到 entry
+#     6. 若需加入过滤条件，在 journals_high_rank.json 的
+#        筛选逻辑中添加
+# ══════════════════════════════════════════════════════════════════════════
+
 import sys, json, os, re, csv
 from collections import defaultdict
 
@@ -150,7 +173,7 @@ class JournalRecord:
         'name_cn', 'name_en',
         'issn', 'eissn', 'publisher',
         'bdhx_core', 'bdhx_rank', 'bdhx_discipline', 'bdhx_category',
-        'cas_zone_2025', 'cas_zone_2023', 'cas_top', 'cas_open_access',
+        'cas_zone_2025', 'cas_zone_2023', 'cas_top', 'cas_open_access', 'cas_discipline',
         'abdc_rating', 'abdc_year',
         'cssci_source', 'cssci_extended', 'cssci_discipline',
         'jif', 'jcr_quartile', 'jcr_rank', 'jcr_publisher',
@@ -300,9 +323,9 @@ for entry in all_entries:
         zone = safe_int(entry.get('分区'))
         if zone and not rec.cas_zone_2025:
             rec.cas_zone_2025 = zone
-        category = safe_str(entry.get('大类', ''))
-        if category and not rec.bdhx_category:
-            rec.bdhx_category = category
+        discipline = safe_str(entry.get('大类', '')) or safe_str(sheet)
+        if discipline and not rec.cas_discipline:
+            rec.cas_discipline = discipline
         jif = safe_float(entry.get('2024IF'))
         if jif and not rec.jif:
             rec.jif = jif
@@ -512,6 +535,8 @@ for rec in unique_records:
         entry["cas_top"] = True
     if rec.cas_open_access:
         entry["cas_open_access"] = True
+    if rec.cas_discipline:
+        entry["cas_discipline"] = rec.cas_discipline
     if rec.abdc_rating:
         entry["abdc_rating"] = rec.abdc_rating
     if rec.cssci_source:
@@ -543,7 +568,36 @@ mcp_json_path = os.path.join(mcp_data_dir, 'journals.json')
 with open(mcp_json_path, 'w', encoding='utf-8') as f:
     json.dump(json_dict, f, ensure_ascii=False, indent=None, separators=(',', ':'))
 
+# ── Filtered JSON: CAS 1-2 and JCR Q1-Q2, excluding specific disciplines ──
+
+def discipline_excluded(discipline):
+    exclude_keywords = ['医学', '材料', '物理', '化学', '生物']
+    if not discipline:
+        return False
+    d = discipline.lower().replace(' ', '')
+    for kw in exclude_keywords:
+        if kw in d:
+            return True
+    return False
+
+filtered_dict = {}
+for issn_key, entry in json_dict.items():
+    cas_zone = entry.get('cas_zone', 0) or 0
+    if cas_zone not in (1, 2):
+        continue
+    jcr_q = entry.get('jcr_quartile', '')
+    if jcr_q not in ('Q1', 'Q2'):
+        continue
+    if discipline_excluded(entry.get('cas_discipline', '')):
+        continue
+    filtered_dict[issn_key] = entry
+
+filtered_path = os.path.join(data_dir, 'journals_high_rank.json')
+with open(filtered_path, 'w', encoding='utf-8') as f:
+    json.dump(filtered_dict, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+
 report_path = os.path.join(data_dir, 'merge_conflicts.md')
 tracker.write_report(report_path, name_to_record)
 
 print(f"journals.json + journals.csv 已生成，共 {len(csv_records)} 条记录")
+print(f"journals_high_rank.json 已生成（CAS 1-2 + JCR Q1-Q2，排除指定学科），共 {len(filtered_dict)} 条记录")

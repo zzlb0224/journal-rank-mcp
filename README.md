@@ -1,124 +1,92 @@
 # publication-rank
 
-An MCP (Model Context Protocol) server for querying academic journal rankings.
+Academic journal ranking query tool — supports both **MCP server** and **opencode Skill** modes.
 
-## Tools
+> ⚡ **Recommendation**: Use the Skill mode. It requires no server process, no dependency installation, and works anywhere you copy the project.
 
-- **query_journal** — Query journal rankings (by ISSN or fuzzy name search)
-- **list_journals** — List all journals in the local database
-- **format_citation** — Format journal info as readable text
+---
 
-## Data Sources
+## MCP Mode (traditional)
 
-| Source | Version | Description |
-|--------|---------|-------------|
-| JCR | 2025 | Impact factor & JCR quartile |
-| CAS Zone | 2025 | Chinese Academy of Sciences zone (with 2023 vs 2025 diff) |
-| Peking University Core | 2023 10th ed. | PKU core journal list |
-| ABDC | 2025 | Australian Business Deans Council list (A\*/A/B/C) |
-| CSSCI | 2025-2026 | Chinese Social Sciences Citation Index |
-| Mega-Journal | 2025 | Journals publishing >3000 articles/year |
+Runs as a standalone MCP server, providing `query_journal`, `list_journals`, `format_citation` tools.
 
-Online fallback sources: Scimago, LetPub.
-
-## Installation
+### Installation
 
 ```bash
-cd publication_rank
 pip install -e .
 ```
 
-Or with uv:
+### Configuration
 
-```bash
-uv sync
-```
-
-## MCP Configuration
-
-### opencode
-
-```json
-{
-  "mcp": {
-    "publication-rank": {
-      "type": "local",
-      "command": ["python", "D:\\1\\opencode\\publication_rank\\src\\publication_rank\\__main__.py"],
-      "enabled": true
-    }
-  }
-}
-```
-
-### Claude Desktop
+Add to your MCP client config:
 
 ```json
 {
   "mcpServers": {
     "publication-rank": {
       "command": "python",
-      "args": ["D:\\1\\opencode\\publication_rank\\src\\publication_rank\\__main__.py"]
+      "args": ["path/to/src/publication_rank/__main__.py"]
     }
   }
 }
 ```
 
-### Cline / Roo Code
+---
 
-Add to `cline_mcp_settings.json`:
+## Skill Mode (recommended ⭐)
 
-```json
-{
-  "mcpServers": {
-    "publication-rank": {
-      "command": "python",
-      "args": ["D:\\1\\opencode\\publication_rank\\src\\publication_rank\\__main__.py"]
-    }
-  }
-}
+No server, no dependencies. The AI calls the query script directly when needed.
+
+The skill is located at `.opencode/skills/journal-rank/SKILL.md`. Once this project is opened in opencode, the AI automatically loads the skill and can answer journal rank queries by running:
+
+```
+python .opencode/skills/journal-rank/query_journal.py <name or ISSN>
 ```
 
-### Continue.dev
+**Copy to another project**: just copy the `.opencode/skills/journal-rank/` folder — it's fully self-contained with its own data and script.
 
-Add to `~/.continue/config.json`:
+---
 
-```json
-{
-  "experimental": {
-    "mcpServers": {
-      "publication-rank": {
-        "command": "python",
-        "args": ["D:\\1\\opencode\\publication_rank\\src\\publication_rank\\__main__.py"]
-      }
-    }
-  }
-}
-```
+## Data Sources
 
-### Windsurf / Cursor
+| Source | Version |
+|--------|---------|
+| JCR Impact Factor & Quartile | 2024 |
+| CAS Zone (Chinese Academy of Sciences) | 2025 |
+| Peking University Core | 2023 10th ed. |
+| ABDC (Australian Business Deans Council) | 2025 |
+| CSSCI (Chinese Social Sciences Citation Index) | 2025-2026 |
+| Mega-Journal List | 2025 |
 
-Add to the IDE's MCP configuration:
-
-```json
-{
-  "mcpServers": {
-    "publication-rank": {
-      "command": "python",
-      "args": ["D:\\1\\opencode\\publication_rank\\src\\publication_rank\\__main__.py"]
-    }
-  }
-}
-```
-
-> **Note:** Replace `D:\\1\\opencode\\publication_rank` with your actual installation path.
+---
 
 ## Data Pipeline
 
-Raw data files are in `data/`. To regenerate the database:
+All raw data lives in `data/`. The pipeline `data/to_src_data.py` reads, merges, deduplicates, and outputs:
+
+| Output | Description |
+|--------|-------------|
+| `data/journals.json` | Full journal database (ISSN-keyed) |
+| `data/journals_high_rank.json` | Filtered: CAS 1-2 + JCR Q1-Q2, excludes 医/材/物/化/生 |
+| `data/journals.csv` | Flat table of all records |
+
+### Updating Data
 
 ```bash
-cd data
-python to_src_data.py
+python data/to_src_data.py
 ```
 
-The generated `journals.json` is automatically synced to `src/publication_rank/data/`.
+This regenerates all outputs from the raw files under `data/`.  
+After updating, sync the skill's copy:
+
+```bash
+cp data/journals.json .opencode/skills/journal-rank/journals.json
+```
+
+### Extending (new fields, new journal ratings)
+
+1. Place your raw JSON file in `data/` (must have `"source"` + `"journals"` fields)
+2. Open `data/to_src_data.py` — the header has a checklist
+3. Add an `elif` branch for the new source
+4. Add fields to `JournalRecord.__slots__` if needed
+5. Add field to JSON output section

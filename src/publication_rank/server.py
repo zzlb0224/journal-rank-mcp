@@ -1,3 +1,6 @@
+# MIT License — https://github.com/zzlb0224/journal-rank-mcp
+# Free to use, modify, and distribute. Retain this notice.
+
 from mcp.server import Server, NotificationOptions
 from mcp.server.models import InitializationOptions
 from mcp.types import Tool, TextContent, PromptMessage, GetPromptResult

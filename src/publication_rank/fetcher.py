@@ -1,3 +1,6 @@
+# MIT License — https://github.com/zzlb0224/journal-rank-mcp
+# Free to use, modify, and distribute. Retain this notice.
+
 import re
 import httpx
 from bs4 import BeautifulSoup
