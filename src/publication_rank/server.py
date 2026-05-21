@@ -1,4 +1,4 @@
-# MIT License — https://github.com/zzlb0224/journal-rank-mcp
+# MIT License
 # Free to use, modify, and distribute. Retain this notice.
 
 from mcp.server import Server, NotificationOptions

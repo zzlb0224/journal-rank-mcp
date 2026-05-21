@@ -1,4 +1,4 @@
-# MIT License — https://github.com/zzlb0224/journal-rank-mcp
+# MIT License
 # Free to use, modify, and distribute. Retain this notice.
 
 from publication_rank import main

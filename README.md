@@ -1,5 +1,7 @@
 # publication-rank
 
+> 查看更新: https://github.com/zzlb0224/journal-rank-mcp
+
 Academic journal ranking query tool — supports both **MCP server** and **opencode Skill** modes.
 
 > ⚡ **Recommendation**: Use the Skill mode. It requires no server process, no dependency installation, and works anywhere you copy the project.
@@ -62,7 +64,7 @@ python .opencode/skills/journal-rank/query_journal.py <name or ISSN>
 
 ## Data Pipeline
 
-All raw data lives in `data/`. The pipeline `data/to_src_data.py` reads, merges, deduplicates, and outputs:
+All raw data lives in `data/`. The pipeline `data/build_database.py` reads, merges, deduplicates, and outputs:
 
 | Output | Description |
 |--------|-------------|
@@ -73,7 +75,7 @@ All raw data lives in `data/`. The pipeline `data/to_src_data.py` reads, merges,
 ### Updating Data
 
 ```bash
-python data/to_src_data.py
+python data/build_database.py
 ```
 
 This regenerates all outputs from the raw files under `data/`.  
@@ -83,10 +85,26 @@ After updating, sync the skill's copy:
 cp data/journals.json .opencode/skills/journal-rank/journals.json
 ```
 
-### Extending (new fields, new journal ratings)
+### Extending ①: Add new fields (e.g. SABC rating, SJR, H-index)
 
 1. Place your raw JSON file in `data/` (must have `"source"` + `"journals"` fields)
-2. Open `data/to_src_data.py` — the header has a checklist
+2. Open `data/build_database.py` → the header has **Extending ①** with a 5-step guide
 3. Add an `elif` branch for the new source
-4. Add fields to `JournalRecord.__slots__` if needed
-5. Add field to JSON output section
+4. Add the new field to `JournalRecord.__slots__`
+5. Add the field to the JSON output section
+
+### Extending ②: Adjust `journals_high_rank.json` filter rules
+
+Edit the config block at the top of `data/filter_high_rank.py`:
+
+```python
+CAS_ZONES           = {1, 2}          # CAS zones to keep
+JCR_QUARTILES       = {'Q1', 'Q2'}    # JCR quartiles to keep
+EXCLUDE_DISCIPLINES = ['医学','材料']  # Disciplines to exclude
+```
+
+Then run:
+
+```bash
+python data/filter_high_rank.py
+```

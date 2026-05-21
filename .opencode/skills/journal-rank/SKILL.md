@@ -12,7 +12,7 @@ metadata:
 
 # journal-rank
 
-查询学术期刊的等级信息（中科院分区、JCR分区、影响因子等），支持模糊匹配。
+查询学术期刊的等级信息（中科院分区、JCR分区、影响因子等），支持**期刊名称模糊搜索**和**ISSN 精确搜索**。
 
 ## 数据来源
 
@@ -27,8 +27,14 @@ metadata:
 
 ## 查询方法
 
-```
-python .opencode/skills/journal-rank/query_journal.py "<期刊名称或ISSN>"
+支持期刊名称（中英文）或 ISSN 两种搜索方式：
+
+```bash
+# 按期刊名称模糊搜索
+python .opencode/skills/journal-rank/query_journal.py "Nature"
+
+# 按 ISSN 精确搜索
+python .opencode/skills/journal-rank/query_journal.py "0028-0836"
 ```
 
 返回 JSON 数组，每条记录包含以下字段：
@@ -53,7 +59,7 @@ python .opencode/skills/journal-rank/query_journal.py "<期刊名称或ISSN>"
 
 ## 更新数据
 
-运行 `data/to_src_data.py` 重新生成 `data/journals.json`，然后覆盖到本目录：
+运行 `data/build_database.py` 重新生成 `data/journals.json`，然后覆盖到本目录：
 
 ```
 cp data/journals.json .opencode/skills/journal-rank/journals.json

@@ -1,5 +1,7 @@
 # publication-rank
 
+> 查看更新: https://github.com/zzlb0224/journal-rank-mcp
+
 学术期刊等级查询工具，同时支持 **MCP server** 和 **opencode Skill** 两种使用方式。
 
 > ⚡ **推荐**：使用 Skill 模式。无需启动服务进程、无需安装依赖，复制目录即可随处使用。
@@ -62,7 +64,7 @@ python .opencode/skills/journal-rank/query_journal.py <期刊名称或ISSN>
 
 ## 数据流水线
 
-原始数据位于 `data/` 目录下各子目录。`data/to_src_data.py` 负责读取、合并、去重，输出：
+原始数据位于 `data/` 目录下各子目录。`data/build_database.py` 负责读取、合并、去重，输出：
 
 | 输出文件 | 说明 |
 |----------|------|
@@ -73,7 +75,7 @@ python .opencode/skills/journal-rank/query_journal.py <期刊名称或ISSN>
 ### 更新数据
 
 ```bash
-python data/to_src_data.py
+python data/build_database.py
 ```
 
 重新生成所有输出。更新后同步 skill 中的拷贝：
@@ -82,11 +84,26 @@ python data/to_src_data.py
 cp data/journals.json .opencode/skills/journal-rank/journals.json
 ```
 
-### 扩展指南（新增字段 / 期刊级别）
+### 扩展指南 ①：新增字段（如 SABC 评级、SJR、H-index 等）
 
-1. 将原始 JSON 文件放入 `data/` 下对应子目录
-2. 打开 `data/to_src_data.py` — 文件头部有详细的分步说明
+1. 将原始 JSON 文件放入 `data/` 下对应子目录（需含 `"source"` 和 `"journals"` 字段）
+2. 打开 `data/build_database.py` → 文件头部有 **扩展指南 ①** 的 5 步详细说明
 3. 在 `elif` 分支添加新数据源的解析逻辑
-4. 如需新增字段，在 `JournalRecord.__slots__` 中添加
-5. 在 JSON 输出段添加该字段
-6. 如需加入过滤条件，在 `journals_high_rank.json` 生成逻辑中添加
+4. 在 `JournalRecord.__slots__` 中声明新字段
+5. 在 JSON 输出段添加该字段的写出代码
+
+### 扩展指南 ②：调整 `journals_high_rank.json` 筛选条件
+
+编辑 `data/filter_high_rank.py` 顶部的配置块即可：
+
+```python
+CAS_ZONES           = {1, 2}          # 保留的中科院分区
+JCR_QUARTILES       = {'Q1', 'Q2'}    # 保留的 JCR 分区
+EXCLUDE_DISCIPLINES = ['医学','材料']  # 排除的学科关键词
+```
+
+改完后运行：
+
+```bash
+python data/filter_high_rank.py
+```
