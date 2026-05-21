@@ -4,7 +4,7 @@
 
 Academic journal ranking query tool — supports both **MCP server** and **opencode Skill** modes.
 
-> ⚡ **Recommendation**: Use the Skill mode. It requires no server process, no dependency installation, and works anywhere you copy the project.
+> ⚡ **Recommendation**: Use the Skill mode. It requires no server process, no dependency installation, and works anywhere you copy the project (requires **Python ≥ 3.11**).
 
 ---
 
