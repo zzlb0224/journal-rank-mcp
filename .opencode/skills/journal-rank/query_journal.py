@@ -5,6 +5,8 @@
 🔍 query_journal.py — 期刊模糊查询工具
 
 通过期刊名称或 ISSN 模糊搜索，返回匹配度最高的前 10 条结果。
+每条结果附带 high 字段，标记是否为高水平期刊
+（SCI/SSCI 收录 + 影响因子 > 4 + 排除医/材/物/化/生 学科）。
 
 用法：
     python query_journal.py "Nature"
@@ -12,7 +14,7 @@
     python query_journal.py "0028-0836"
 
 输出：
-    JSON 数组，每条包含期刊的全部等级信息（JCR 分区、中科院分区、影响因子等）。
+    JSON 数组，每条包含全部等级信息及 high 字段。
     无匹配时返回空数组 []。
 
 数据来源：
@@ -25,6 +27,28 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).parent
 JOURNALS_FILE = DATA_DIR / "journals.json"
+
+
+EXCLUDE_DISCIPLINES_HIGH = ['医学', '材料', '物理', '化学', '生物']
+
+
+def _discipline_excluded(discipline: str) -> bool:
+    if not discipline:
+        return False
+    d = discipline.lower().replace(' ', '')
+    return any(kw in d for kw in EXCLUDE_DISCIPLINES_HIGH)
+
+
+def _is_high_rank(entry: dict) -> bool:
+    """判断是否为高水平期刊：SCI/SSCI + IF>4 + 排除指定学科"""
+    if not entry.get('jcr_quartile'):
+        return False
+    jif = entry.get('jif', 0) or 0
+    if jif <= 4:
+        return False
+    if _discipline_excluded(entry.get('cas_discipline', '')):
+        return False
+    return True
 
 
 def _normalize(name: str) -> str:
@@ -65,6 +89,9 @@ def search_journal(query: str) -> list[dict]:
     """
     在所有期刊中按名称或 ISSN 模糊搜索。
 
+    每条结果附带 high 字段，标记是否为高水平期刊
+    （SCI/SSCI 收录 + 影响因子 > 4 + 排除医/材/物/化/生）。
+
     得分规则：
       - ISSN 完全匹配（去连字符后 8 位一致）→ 1.0
       - 规范化名称完全一致 → 1.0
@@ -100,7 +127,7 @@ def search_journal(query: str) -> list[dict]:
                 score = max(score, 0.8)
 
         if score >= 0.4:
-            results.append((score, {"issn": issn, **entry}))
+            results.append((score, {"issn": issn, "high": _is_high_rank(entry), **entry}))
 
     results.sort(key=lambda x: -x[0])
     return [r[1] for r in results[:10]]

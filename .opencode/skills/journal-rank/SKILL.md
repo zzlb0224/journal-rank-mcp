@@ -52,6 +52,7 @@ python .opencode/skills/journal-rank/query_journal.py "0028-0836"
 | `cas_top` | 是否 Top 期刊 |
 | `cas_open_access` | 是否 OA |
 | `cas_discipline` | 中科院学科分类 |
+| `high` | 高水平标记 (true/false) — SCI/SSCI + IF>4 + 排除医/材/物/化/生 |
 | `abdc_rating` | ABDC 评级 (A*/A/B/C) |
 | `cssci` | CSSCI 收录 ("来源期刊" / "扩展版") |
 | `pkua` | 北大核心收录 |

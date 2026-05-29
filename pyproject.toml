@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "publication-rank"
+name = "journal-rank-mcp"
 version = "0.1.0"
 description = "MCP server for querying academic journal rankings (JCR quartile, CAS zone, impact factor, etc.)"
 requires-python = ">=3.11"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-publication-rank = "publication_rank:main"
+journal-rank-mcp = "journal_rank_mcp:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/publication_rank"]
+packages = ["src/journal_rank_mcp"]

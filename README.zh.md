@@ -25,9 +25,9 @@ pip install -e .
 ```json
 {
   "mcpServers": {
-    "publication-rank": {
+    "journal-rank-mcp": {
       "command": "python",
-      "args": ["path/to/src/publication_rank/__main__.py"]
+      "args": ["path/to/src/journal_rank_mcp/__main__.py"]
     }
   }
 }
@@ -86,11 +86,10 @@ cp data/journals.json .opencode/skills/journal-rank/journals.json
 
 ### 扩展指南 ①：新增字段（如 SABC 评级、SJR、H-index 等）
 
-1. 将原始 JSON 文件放入 `data/` 下对应子目录（需含 `"source"` 和 `"journals"` 字段）
-2. 打开 `data/build_database.py` → 文件头部有 **扩展指南 ①** 的 5 步详细说明
-3. 在 `elif` 分支添加新数据源的解析逻辑
-4. 在 `JournalRecord.__slots__` 中声明新字段
-5. 在 JSON 输出段添加该字段的写出代码
+1. 将原始 JSON 文件放入 `data/` 下对应子目录（平铺格式）
+2. 在 JSON 文件中定义 `field_map`，将原始字段名映射为标准字段名
+3. 可选：`norm_defaults` 设固定值，`norm_config` 设类型转换规则
+4. 如需新增标准字段，在 `build_database.py` 的约定字段表中追加说明即可
 
 ### 扩展指南 ②：调整 `journals_high_rank.json` 筛选条件
 

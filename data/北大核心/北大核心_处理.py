@@ -11,7 +11,19 @@ xls = pd.ExcelFile(src_file)
 output = {
     "source": "北大核心",
     "version": "2023第十版",
-    "sheets": {}
+    "journals": []
+}
+
+FIELD_MAP = {
+    '中文刊名': '_name_cn',
+    '刊名': '_name_cn',
+    '期刊名称': '_name_cn',
+    '排名': '_bdhx_rank',
+    '排序号': '_bdhx_rank',
+    '序号': '_bdhx_rank',
+    '学科门类': 'bdhx_discipline',
+    '学科分类': '_bdhx_category',
+    '学科': '_bdhx_category',
 }
 
 for sheet_name in xls.sheet_names:
@@ -19,25 +31,21 @@ for sheet_name in xls.sheet_names:
     cols_clean = [c.strip() if isinstance(c, str) else c for c in df.columns]
     df.columns = cols_clean
 
-    journals = []
     for _, row in df.iterrows():
         entry = {}
         for col in df.columns:
             val = row[col]
             if pd.isna(val):
                 continue
-            entry[col] = val
-        if any(k in entry for k in ('中文刊名', '刊名')):
-            journals.append(entry)
-
-    key = sheet_name.replace(" ", "_")
-    output["sheets"][sheet_name] = {
-        "count": len(journals),
-        "journals": journals
-    }
+            std_field = FIELD_MAP.get(col, col)
+            entry[std_field] = val
+        if not any(k in entry for k in ('_name_cn',)):
+            continue
+        entry['pkua'] = "北大核心"
+        output["journals"].append(entry)
 
 output_path = os.path.join(script_dir, '北大核心.json')
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
-print(f"北大核心处理完成，共 {sum(s['count'] for s in output['sheets'].values())} 条记录")
+print(f"北大核心处理完成，共 {len(output['journals'])} 条记录")

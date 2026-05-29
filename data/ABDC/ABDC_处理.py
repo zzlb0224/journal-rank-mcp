@@ -11,7 +11,7 @@ xls = pd.ExcelFile(src_file)
 output = {
     "source": "ABDC",
     "version": "2025",
-    "sheets": {}
+    "journals": []
 }
 
 # Each sheet has different header row offsets
@@ -24,6 +24,15 @@ sheet_config = {
     '2010 JQL': {'skiprows': 0, 'header_row': 0, 'col_names': ['Journal Name', 'ISSN', 'ISSN Online', 'Start year', 'www', 'ABDC FoR code', 'ABDC Ranking']},
 }
 
+RATING_FIELDS = {
+    '2025 JQL': '2025 rating',
+    '2022 JQL': '2022 rating',
+    '2019 JQL': '2019 Rating',
+    '2016 JQL': '2016 rating',
+    '2013 JQL': 'ABDC List 2013',
+    '2010 JQL': 'ABDC Ranking',
+}
+
 for sheet_name in xls.sheet_names:
     if sheet_name not in sheet_config:
         continue
@@ -34,38 +43,45 @@ for sheet_name in xls.sheet_names:
     else:
         df = pd.read_excel(xls, sheet_name)
 
-    # Drop the unnamed index column if it's all NaN
     unnamed_cols = [c for c in df.columns if 'Unnamed' in str(c)]
     if unnamed_cols:
         df = df.drop(columns=unnamed_cols)
 
-    # Assign column names
     actual_cols = list(df.columns)
     if len(actual_cols) == len(cfg['col_names']):
         df.columns = cfg['col_names']
     else:
         df.columns = actual_cols
 
-    journals = []
+    rating_col = RATING_FIELDS[sheet_name]
     for _, row in df.iterrows():
         entry = {}
-        for col in df.columns:
-            val = row[col]
-            if pd.isna(val):
-                continue
-            if isinstance(val, str):
-                val = val.strip()
-            entry[col] = val
-        if entry:
-            journals.append(entry)
+        name_en = row.get('Journal Title') or row.get('Journal Name')
+        if pd.isna(name_en) or not str(name_en).strip():
+            continue
+        entry['_name_en'] = str(name_en).strip()
 
-    output["sheets"][sheet_name] = {
-        "count": len(journals),
-        "journals": journals
-    }
+        publisher = row.get('Publisher')
+        if pd.notna(publisher):
+            entry['publisher'] = str(publisher).strip()
+
+        issn = row.get('ISSN')
+        if pd.notna(issn):
+            entry['issn'] = str(issn).strip()
+
+        issn_online = row.get('ISSNOnline') or row.get('ISSN Online')
+        if pd.notna(issn_online):
+            entry['eissn'] = str(issn_online).strip()
+
+        rating = row.get(rating_col)
+        if pd.notna(rating):
+            entry['abdc_rating'] = str(rating).strip()
+
+        if entry:
+            output["journals"].append(entry)
 
 output_path = os.path.join(script_dir, 'ABDC.json')
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
-print(f"ABDC处理完成，共 {sum(s['count'] for s in output['sheets'].values())} 条记录")
+print(f"ABDC处理完成，共 {len(output['journals'])} 条记录")

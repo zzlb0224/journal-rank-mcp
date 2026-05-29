@@ -25,9 +25,9 @@ Add to your MCP client config:
 ```json
 {
   "mcpServers": {
-    "publication-rank": {
+    "journal-rank-mcp": {
       "command": "python",
-      "args": ["path/to/src/publication_rank/__main__.py"]
+      "args": ["path/to/src/journal_rank_mcp/__main__.py"]
     }
   }
 }
@@ -87,11 +87,10 @@ cp data/journals.json .opencode/skills/journal-rank/journals.json
 
 ### Extending ①: Add new fields (e.g. SABC rating, SJR, H-index)
 
-1. Place your raw JSON file in `data/` (must have `"source"` + `"journals"` fields)
-2. Open `data/build_database.py` → the header has **Extending ①** with a 5-step guide
-3. Add an `elif` branch for the new source
-4. Add the new field to `JournalRecord.__slots__`
-5. Add the field to the JSON output section
+1. Place your raw JSON file in `data/` (flat format)
+2. Define `field_map` in the JSON file to map raw field names to standard names
+3. Optional: `norm_defaults` for fixed values, `norm_config` for type conversion rules
+4. Document new standard fields in `build_database.py`'s convention table
 
 ### Extending ②: Adjust `journals_high_rank.json` filter rules
 
@@ -101,6 +100,12 @@ Edit the config block at the top of `data/filter_high_rank.py`:
 CAS_ZONES           = {1, 2}          # CAS zones to keep
 JCR_QUARTILES       = {'Q1', 'Q2'}    # JCR quartiles to keep
 EXCLUDE_DISCIPLINES = ['医学','材料']  # Disciplines to exclude
+```
+
+Then run:
+
+```bash
+python data/filter_high_rank.py
 ```
 
 Then run:
