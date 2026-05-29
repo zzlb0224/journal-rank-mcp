@@ -17,7 +17,7 @@
 
 | 文件 | 内容 | 记录数 | 部署路径 |
 |------|------|--------|----------|
-| `journals.json` | 全部数据，所有字段 | 27610 | `src/journal_rank_mcp/data/journals.json` |
+| `journals.json` | 全部数据，所有字段 | 27610 | `src/journal_rank_mcp/journals.json`、`.opencode/skills/journal-rank/journals.json` |
 | `journals_lite.json` | 全部数据，仅 `fields_lite.md` 中字段 | 27610 | — |
 | `journals_high_lite.json` | 高水平期刊，仅 `fields_lite.md` 中字段 | ~1001 | `.opencode/skills/search-scispace/journals_high_lite.json` |
 
