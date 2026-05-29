@@ -28,17 +28,16 @@ for idx, sheet_name in enumerate(xls.sheet_names):
     for i in range(start_row, len(df)):
         row = df.iloc[i]
         journal_name = row.iloc[1]
-        discipline = row.iloc[2]
         if pd.isna(journal_name):
             continue
-        entry = {
-            "_name_cn": str(journal_name).strip() if isinstance(journal_name, str) else journal_name,
-            "cssci_discipline": str(discipline).strip() if isinstance(discipline, str) else discipline,
-            "cssci": cssci_type
-        }
+        entry = {"name_cn": str(journal_name).strip() if isinstance(journal_name, str) else journal_name}
+        if cssci_type == "来源期刊":
+            entry["cssci_source"] = 1
+        else:
+            entry["cssci_extended"] = 1
         output["journals"].append(entry)
 
-output_path = os.path.join(script_dir, 'CSSCI.json')
+output_path = os.path.join(os.path.dirname(script_dir), 'CSSCI.json')
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
