@@ -267,8 +267,6 @@ with open(md_path, 'w', encoding='utf-8') as f:
     f.write('\n'.join(lines))
 print(f'Written: {md_path}')
 
-print('\nDone!')
-
 # Copy to target dirs
 import shutil
 mcp_dst = os.path.join(data_dir, '..', 'src', 'journal_rank_mcp', 'journals.json')
@@ -278,3 +276,9 @@ print(f'Copied to: {mcp_dst}')
 scispace_dst = os.path.join(data_dir, '..', '.opencode', 'skills', 'search-scispace', 'journals_high_lite.json')
 shutil.copy2(out_high, scispace_dst)
 print(f'Copied to: {scispace_dst}')
+
+skill_dst = os.path.join(data_dir, '..', '.opencode', 'skills', 'journal-rank', 'journals.json')
+shutil.copy2(out_full, skill_dst)
+print(f'Copied to: {skill_dst}')
+
+print('\nDone!')
